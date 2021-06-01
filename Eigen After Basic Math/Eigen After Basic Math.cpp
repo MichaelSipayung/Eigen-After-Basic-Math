@@ -104,6 +104,61 @@ int main()
 	//another block
 	fourTimesFour.block(0, 0, 2, 3) = fourTimesFour.block(2, 1, 2, 3);
 	std::cout << "Here is now a with bottom -right 2x3  block copied into  top-left  2x3 block  \n" << fourTimesFour << std::endl;
+	// for better performance another api 
+
+	Eigen::MatrixXf anotherApi(3, 3);
+	anotherApi << 1, 2, 3,
+				4, 5, 6,
+				7, 8, 9;
+	std::cout << "Here is the matrix\n" << anotherApi << std::endl;
+	std::cout << "2nd row \n" << anotherApi.row(1) << std::endl;
+	anotherApi.col(2) += 3 * anotherApi.col(0);
+	std::cout << "After adding 3 times the first column into the third column , the matrix m is\n" << anotherApi << std::endl;
+	std::cout << "Another example using col and row method " << std::endl;
+	Eigen::MatrixXf anotherTestRow(4, 4);
+	anotherTestRow << 1, 2, 3, 4,
+		2, 2, 3, 4,
+		3, 2, 3, 4,
+		4, 2, 3, 4;
+
+	std::cout << "Print the current column \n" << anotherTestRow.col(3) << std::endl;
+	std::cout << "Print the current row \n" << anotherTestRow.row(3) << std::endl;
+	std::cout << "show each column \t:[ " << std::endl;
+	for (auto i = 0; i != 4; ++i) {
+		std::cout << "column\t: " << i << std::endl;
+		std::cout << anotherTestRow.col(i) << std::endl;
+	}
+	std::cout << "]" << std::endl;
+
+	std::cout << "show each row \t:[ " << std::endl;
+	for (auto i = 0; i != 4; ++i) {
+		std::cout << "row\t:  " << i << std::endl;
+		std::cout << anotherTestRow.row(i) << std::endl;
+	}
+	std::cout << "]" << std::endl;
+
+	std::cout << "Assign new value to last row" << std::endl;
+	anotherTestRow.row(3) += 3 * anotherTestRow.row(1);
+	std::cout << "After assign new value by adding scalar \n" << anotherTestRow.row(3) << std::endl;
+	std::cout << "Corner related operations" << std::endl;
+	Eigen::MatrixXd testOperation(4, 4);
+	testOperation << 1, 2, 3, 4,
+		2, 2, 3, 4,
+		3, 2, 3, 4,
+		4, 2, 3, 4;
+	std::cout << "show the current matrix\n" << testOperation << std::endl;
+	std::cout << "Show only first column and the second column from left side\n" << testOperation.leftCols(2) << std::endl;
+	std::cout << "Show only first row and the second row from top side\n" << testOperation.topRows(2) << std::endl;
+	std::cout << "Show the last column\n" << testOperation.rightCols(1) << std::endl;
+	std::cout << "Top left p by  q block (case 1,2 . for p and q respectively) .. testing  \n" << anotherTestRow.topLeftCorner(2, 3)<<std::endl;
+	//show the curretn element in first row to the secondrow from left as 3 element
+	std::cout << "testing rvalues to topleftcorner" << std::endl;
+	std::cout << "before transpose bottom left corner  (3,1)\n" << testOperation.bottomLeftCorner(3, 1) << std::endl;
+	std::cout << "after transpose bottom left corner  (3,1)\n" << testOperation.bottomLeftCorner(3, 1).transpose() << std::endl;
+	testOperation.topLeftCorner(1, 3) = testOperation.bottomLeftCorner(3, 1).transpose();
+	std::cout << "after Assign \n" << testOperation.topLeftCorner(3, 1) << std::endl;
+	assert(testOperation.rows() == 4);//test assertion 
+
 
 
 	return 0;
